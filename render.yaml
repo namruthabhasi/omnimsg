@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: omnimessage
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    disk:
+      name: omnimessage-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:////var/data/omnimessage.db
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: AGENT_PASSWORD
+        generateValue: true
+      - key: DEMO_MODE
+        value: "true"
+      - key: DEMO_PASSWORD
+        value: demo1234
+      - key: ENABLE_SIMULATOR
+        value: "true"
+      - key: LLM_PROVIDER
+        value: mock
