@@ -168,10 +168,12 @@ label{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
 <div id="toast" class="glass" role="status"></div>
 
 <script>
+const API_BASE = "https://YOUR-BACKEND-URL";
 const $ = s => document.querySelector(s);
 const S = { base:'', token:null, active:null, ws:null, convs:[] };
 const SK = 'omni_session';
-const defaultBase = window.location.protocol === 'file:' ? 'http://localhost:8000' : window.location.origin;
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const defaultBase = isLocalhost ? (window.location.protocol === 'file:' ? 'http://localhost:8000' : window.location.origin) : API_BASE;
 S.base = defaultBase;
 $('#base').value = defaultBase;
 
